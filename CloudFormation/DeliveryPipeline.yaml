@@ -17,7 +17,7 @@ Resources:
                 - "sts:AssumeRole"
         Path: "/"
         Policies:
-          - PolicyName: root
+          - PolicyName: 'CloudFormationRolePolicy'
             PolicyDocument:
               Version: "2012-10-17"
               Statement:
@@ -41,7 +41,7 @@ Resources:
                 - "sts:AssumeRole"
         Path: "/"
         Policies:
-          - PolicyName: root
+          - PolicyName: 'CodePipelineServiceRolePolicy'
             PolicyDocument:
               Version: "2012-10-17"
               Statement:

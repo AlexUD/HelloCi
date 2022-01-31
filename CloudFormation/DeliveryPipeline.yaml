@@ -1,0 +1,105 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CodePipeline template
+Parameters:
+  ArtifactStoreS3Location:
+    Default: codepipeline.test.templates
+  Description: Bucket with templates
+  Type: String
+Resource:
+  CloudFormationRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              AWS:
+                - "arn:aws:iam::871404303724:user/alex"
+              Service:
+                - "cloudformation.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        Path: "/"
+        Policies:
+          - PolicyName: root
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action: '*'
+                  Resource: '*'
+  PipelineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              AWS:
+                - "arn:aws:iam::871404303724:user/alex"
+              Service:
+                - "cloudformation.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        Path: "/"
+        Policies:
+          - PolicyName: root
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action: '*'
+                  Resource: '*'
+  DeliveryPipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      RoleArn:
+        Ref: CodePipelineServiceRole
+      ArtifactStore:
+        Type: S3
+        Location:
+          Ref: ArtifactStoreS3Location
+      Stages:
+        -
+          Name: Source
+          Actions:
+            -
+              Name: SourceAction
+              ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Version: 1
+                Provider: S3
+              OutputArtifacts:
+                -
+                  Name: my-project-BuildArtifact
+                  Configuration:
+                    S3Bucket:
+                      Ref: SourceS3Bucket
+                    S3ObjectKey:
+                      Ref: SourceS3ObjectKey
+              RunOrder: 1
+        -
+          Name: CF_Deploy
+          Actions:
+            -
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: CloudFormation
+                Version: '1'
+              Configuration:
+                ActionMode: CREATE_UPDATE
+                Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                RoleArn:
+                  Ref: CloudFormationRole
+                StackName: my-project--testName
+                TemplateConfiguration: 'my-project--BuildArtifact::template-configuration.json'
+                TemplatePath: 'my-project--BuildArtifact::template-export.yml'
+              OutputArtifacts: [ ]
+              InputArtifacts:
+                - Name: my-project-BuildArtifact
+              RunOrder: 1

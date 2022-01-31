@@ -31,7 +31,7 @@ pipeline{
                 echo 'Deploying...'
                 withAWS(region:'us-west-2',credentials:'aws-admin-alex-cred') {
                     sh 'echo "Uploading content with AWS creds..."'
-                    s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'target/HelloCi-1.0-SNAPSHOT.jar', bucket:'jenkins.testbucket.builds')
+                    s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'CloudFormation/iac.zip', bucket:'codepipeline.test.templates')
                 }
             }
         }

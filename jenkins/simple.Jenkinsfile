@@ -16,7 +16,8 @@ pipeline{
                 zip (
                     dir: 'CloudFormation',
                     glob: '**/*',
-                    zipFile: 'CloudFormation/iac.zip'
+                    zipFile: 'CloudFormation/iac.zip',
+                    overwrite: true
                 )
             }
         }

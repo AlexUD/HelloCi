@@ -26,7 +26,7 @@ pipeline{
                 echo 'Deploying...'
                 withAWS(region:'us-west-2',credentials:'aws-admin-alex-cred') {
                     sh 'echo "Uploading content with AWS creds..."'
-                    s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'CloudFormation/iac.zip', bucket:'codepipeline.test.templates')
+                    s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'CloudFormation/iac.zip', bucket:'codepipeline.test.templates/artifacts')
                     s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'CloudFormation/DeliveryPipeline.yaml', bucket:'codepipeline.test.templates')
                 }
             }

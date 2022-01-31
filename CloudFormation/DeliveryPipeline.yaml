@@ -60,8 +60,7 @@ Resource:
         Ref: CodePipelineServiceRole
       ArtifactStore:
         Type: S3
-        Location:
-          Ref: ArtifactStoreS3Location
+        Location: 'codepipeline.test.templates/artifacts'
       Stages:
         -
           Name: Source
@@ -77,10 +76,9 @@ Resource:
                 -
                   Name: my-project-BuildArtifact
                   Configuration:
-                    S3Bucket:
-                      Ref: SourceS3Bucket
+                    S3Bucket: 'codepipeline.test.templates'
                     S3ObjectKey:
-                      Ref: SourceS3ObjectKey
+                      Ref: 'artifacts/iac.zip'
               RunOrder: 1
         -
           Name: CF_Deploy

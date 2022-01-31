@@ -60,7 +60,7 @@ Resource:
         Ref: CodePipelineServiceRole
       ArtifactStore:
         Type: S3
-        Location: 'codepipeline.test.templates/artifacts'
+        Location: 'codepipeline.test.templates'
       Stages:
         -
           Name: Source

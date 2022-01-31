@@ -67,13 +67,12 @@ Resource:
                 Owner: AWS
                 Version: 1
                 Provider: S3
+              Configuration:
+                S3Bucket: 'codepipeline.test.templates'
+                S3ObjectKey: 'artifacts/iac.zip'
               OutputArtifacts:
                 -
                   Name: my-project-BuildArtifact
-                  Configuration:
-                    S3Bucket: 'codepipeline.test.templates'
-                    S3ObjectKey:
-                      Ref: 'artifacts/iac.zip'
               RunOrder: 1
         -
           Name: CF_Deploy

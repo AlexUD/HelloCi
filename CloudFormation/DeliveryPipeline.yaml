@@ -24,7 +24,7 @@ Resources:
                 - Effect: Allow
                   Action: '*'
                   Resource: '*'
-  PipelineRole:
+  CodePipelineServiceRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:

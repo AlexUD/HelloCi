@@ -14,17 +14,11 @@ pipeline{
         stage('Build Archive'){
             steps{
                 zip (
-                    dir: 'CloudFormation',
+                    dir: 'CloudFormation/iac',
                     glob: '**/*',
                     zipFile: 'CloudFormation/iac.zip',
                     overwrite: true
                 )
-            }
-        }
-        stage('Build'){
-            steps{
-                echo 'Building...'
-                sh 'mvn clean install'
             }
         }
         stage('Deploy'){
@@ -33,6 +27,7 @@ pipeline{
                 withAWS(region:'us-west-2',credentials:'aws-admin-alex-cred') {
                     sh 'echo "Uploading content with AWS creds..."'
                     s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'CloudFormation/iac.zip', bucket:'codepipeline.test.templates')
+                    s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'CloudFormation/DeliveryPipeline.yaml', bucket:'codepipeline.test.templates')
                 }
             }
         }

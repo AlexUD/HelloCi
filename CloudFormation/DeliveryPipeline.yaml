@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: CodePipeline template
-Resource:
+Resources:
   CloudFormationRole:
     Type: AWS::IAM::Role
     Properties:

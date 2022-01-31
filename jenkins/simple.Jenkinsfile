@@ -26,7 +26,7 @@ pipeline{
         stage('Deploy'){
             steps{
                 echo 'Deploying...'
-                withAWS(region:'us-west-2',credentials:'aws-admin-alex-cred') {
+                withAWS(region:'us-west-2',roleAccount:'871404303724',role:'S3TestRole') {
                     sh 'echo "Uploading content with AWS creds..."'
                     s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'target/HelloCi-1.0-SNAPSHOT.jar', bucket:'jenkins.testbucket.builds')
                 }

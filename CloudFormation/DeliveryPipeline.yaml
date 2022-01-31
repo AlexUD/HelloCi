@@ -1,10 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: CodePipeline template
-Parameters:
-  ArtifactStoreS3Location:
-    Default: codepipeline.test.templates
-  Description: Bucket with templates
-  Type: String
 Resource:
   CloudFormationRole:
     Type: AWS::IAM::Role

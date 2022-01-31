@@ -1,11 +1,6 @@
 
-builder = "ubuntu"
-
 pipeline{
-    agent {
-        node {
-            label "${builder}"
-        }
+    agent any
     }
 
     stages {

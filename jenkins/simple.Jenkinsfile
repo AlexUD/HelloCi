@@ -13,11 +13,7 @@ pipeline{
         }
         stage('Build Archive'){
             steps{
-                zip(
-                    dir: 'CloudFormation',
-                    glob: '**/*',
-                    zipFile: 'CloudFormation/iac.zip'
-                )
+                zip dir: 'CloudFormation', glob: '**/*', zipFile: 'CloudFormation/iac.zip'
             }
         }
         stage('Build'){

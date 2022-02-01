@@ -25,6 +25,7 @@ Resources:
           Action:
             - 'cloudformation:*'
             - 's3:*'
+            - 'iam:PassRole'
           Resource: "*"
       Roles:
         - Ref: PipelineRole

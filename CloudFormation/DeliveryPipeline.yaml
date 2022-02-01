@@ -28,7 +28,12 @@ Resources:
     Type: AWS::CodePipeline::Pipeline
     Properties:
       RoleArn:
-        Ref: RootRole
+        Fn::Join:
+          - ''
+          - 'arn:aws:iam::'
+          - '871404303724'
+          - ":role/"
+          - Ref: RootRole
       ArtifactStore:
         Type: S3
         Location: 'codepipeline.test.templates.pipeline'

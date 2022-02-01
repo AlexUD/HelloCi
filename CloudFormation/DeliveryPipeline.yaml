@@ -29,6 +29,7 @@ Resources:
             - 'iam:GetRole'
             - 'iam:CreateRole'
             - 'iam:PutRolePolicy'
+            - 'iam:DeleteRole'
           Resource: "*"
       Roles:
         - Ref: PipelineRole

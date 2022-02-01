@@ -95,7 +95,7 @@ Resources:
                     - - 'arn:aws:iam::'
                       - '871404303724'
                       - ":role/"
-                      - Ref: PipelineRole
+                      - Ref: RootRole
                 StackName: my-project--testName
                 TemplateConfiguration: 'my-project-BuildArtifact::template-configuration.json'
                 TemplatePath: 'my-project-BuildArtifact::template-export.yml'

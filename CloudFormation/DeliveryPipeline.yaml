@@ -81,8 +81,8 @@ Resources:
                       - ":role/"
                       - Ref: RootRole
                 StackName: my-project--testName
-                TemplateConfiguration: 'my-project--BuildArtifact::template-configuration.json'
-                TemplatePath: 'my-project--BuildArtifact::template-export.yml'
+                TemplateConfiguration: 'template-configuration.json'
+                TemplatePath: 'template-export.yml'
               OutputArtifacts: [ ]
               InputArtifacts:
                 - Name: my-project-BuildArtifact

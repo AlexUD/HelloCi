@@ -59,6 +59,7 @@ Resources:
           Name: CF_Deploy
           Actions:
             -
+              Name: StackDeploy
               ActionTypeId:
                 Category: Deploy
                 Owner: AWS

@@ -19,6 +19,7 @@ Resources:
               - "cloudformation.amazonaws.com"
               - "codepipeline.amazonaws.com"
               - "lambda.amazonaws.com"
+              - 'ec2.amazonaws.com'
           Action: sts:AssumeRole
       Path: "/"
   PipelineDeployRolePolicies:

@@ -1,15 +1,43 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: CodePipeline template
-Parameters:
-  PipelineRole:
-    Description: Role's ARN
-    Type: String
 Resources:
+  RootRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          Effect: "Allow"
+          Principal:
+            Service:
+              - "cloudformation.amazonaws.com"
+              - "iam.amazonaws.com"
+              - "lambda.amazonaws.com"
+          Action: sts:AssumeRole
+      Path: "/"
+  RolePolicies:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "root"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          Effect: "Allow"
+          Action: "*"
+          Resource: "*"
+      Roles:
+        - Ref: RootRole
   DeliveryPipeline:
+    DependsOn : RolePolicies
     Type: AWS::CodePipeline::Pipeline
     Properties:
       RoleArn:
-        - Ref: PipelineRole
+        Fn::Join:
+          - ''
+          - - 'arn:aws:iam::'
+            - '871404303724'
+            - ":role/"
+            - Ref: RootRole
       ArtifactStore:
         Type: S3
         Location: 'codepipeline.test.templates.pipeline'
@@ -45,7 +73,12 @@ Resources:
                 ActionMode: CREATE_UPDATE
                 Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 RoleArn:
-                  Ref: RootRole
+                  Fn::Join:
+                    - ''
+                    - - 'arn:aws:iam::'
+                      - '871404303724'
+                      - ":role/"
+                      - Ref: RootRole
                 StackName: my-project--testName
                 TemplateConfiguration: 'my-project--BuildArtifact::template-configuration.json'
                 TemplatePath: 'my-project--BuildArtifact::template-export.yml'

@@ -13,6 +13,7 @@ Resources:
               - "cloudformation.amazonaws.com"
               - "cloudformation.amazonaws.com"
               - "iam.amazonaws.com"
+              - "lambda.amazonaws.com"
           Action: sts:AssumeRole
       Path: "/"
   PipelineRole:
@@ -27,6 +28,7 @@ Resources:
               - "codepipeline.amazonaws.com"
               - "cloudformation.amazonaws.com"
               - "iam.amazonaws.com"
+              - "lambda.amazonaws.com"
           Action: sts:AssumeRole
       Path: "/"
   RolePolicies:

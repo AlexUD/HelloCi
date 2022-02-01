@@ -23,6 +23,7 @@ Resources:
           Effect: "Allow"
           Action:
             - 'cloudformation:*'
+            - 'iam:*'
           Resource: "*"
       Roles:
         - Ref: PipelineRole

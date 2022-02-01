@@ -1,5 +1,5 @@
 {
   "Parameters" : {
-    "SSHLocation": "0.0.0.0/0"
+    "SSHLocation": "10.0.15.20/0"
   }
 }

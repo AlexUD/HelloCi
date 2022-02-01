@@ -25,6 +25,7 @@ Resources:
       Roles:
         - Ref: RootRole
   DeliveryPipeline:
+    DependsOn : RolePolicies
     Type: AWS::CodePipeline::Pipeline
     Properties:
       RoleArn:

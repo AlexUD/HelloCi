@@ -4,6 +4,7 @@ Parameters:
   PipelineRole:
     Description: Role's ARN
     Type: String
+Resources:
   DeliveryPipeline:
     DependsOn : RolePolicies
     Type: AWS::CodePipeline::Pipeline

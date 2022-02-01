@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: CodePipeline template
 Resources:
-  RootRole:
+  PipelineRole:
     Type: "AWS::IAM::Role"
     Properties:
       AssumeRolePolicyDocument:
@@ -12,11 +12,10 @@ Resources:
             Service:
               - "cloudformation.amazonaws.com"
               - "codepipeline.amazonaws.com"
-              - "iam.amazonaws.com"
               - "lambda.amazonaws.com"
           Action: sts:AssumeRole
       Path: "/"
-  RolePolicies:
+  PipelineRolePolicies:
     Type: "AWS::IAM::Policy"
     Properties:
       PolicyName: "root"
@@ -24,12 +23,21 @@ Resources:
         Version: "2012-10-17"
         Statement:
           Effect: "Allow"
-          Action: "*"
+          Action:
+            - 'iam:*'
+            - 's3:*'
+            - 'cloudformation:*'
+            - 'elasticmapreduce:*'
+            - 'states:*'
+            - 'sns:*'
+            - 'events:*'
+            - 'cloudwatch:*'
+            - 'lambda:*'
           Resource: "*"
       Roles:
         - Ref: RootRole
   DeliveryPipeline:
-    DependsOn : RolePolicies
+    DependsOn : PipelineRolePolicies
     Type: AWS::CodePipeline::Pipeline
     Properties:
       RoleArn:
@@ -38,7 +46,7 @@ Resources:
           - - 'arn:aws:iam::'
             - '871404303724'
             - ":role/"
-            - Ref: RootRole
+            - Ref: PipelineRole
       ArtifactStore:
         Type: S3
         Location: 'codepipeline.test.templates'
@@ -79,7 +87,7 @@ Resources:
                     - - 'arn:aws:iam::'
                       - '871404303724'
                       - ":role/"
-                      - Ref: RootRole
+                      - Ref: PipelineRole
                 StackName: my-project--testName
                 TemplateConfiguration: 'my-project-BuildArtifact::template-configuration.json'
                 TemplatePath: 'my-project-BuildArtifact::template-export.yml'

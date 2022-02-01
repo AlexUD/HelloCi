@@ -102,7 +102,7 @@ Resources:
                 Provider: CloudFormation
                 Version: '1'
               Configuration:
-                ActionMode: CREATE_UPDATE
+                ActionMode: DELETE_ONLY
                 Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 RoleArn:
                   Fn::Join:

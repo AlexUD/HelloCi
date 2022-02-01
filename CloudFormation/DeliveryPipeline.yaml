@@ -37,8 +37,46 @@ Resources:
           Resource: "*"
       Roles:
         - Ref: PipelineRole
+  PipelineDeployRole:
+  Type: "AWS::IAM::Role"
+  Properties:
+    AssumeRolePolicyDocument:
+      Version: "2012-10-17"
+      Statement:
+        Effect: "Allow"
+        Principal:
+          Service:
+            - "cloudformation.amazonaws.com"
+            - "codepipeline.amazonaws.com"
+            - "lambda.amazonaws.com"
+        Action: sts:AssumeRole
+    Path: "/"
+  PipelineDeployRolePolicies:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "PipelineRolePolicies"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          Effect: "Allow"
+          Action:
+            - 'iam:*'
+            - 's3:*'
+            - 'cloudformation:*'
+            - 'elasticmapreduce:*'
+            - 'states:*'
+            - 'sns:*'
+            - 'events:*'
+            - 'cloudwatch:*'
+            - 'lambda:*'
+            - 'ec2:*'
+          Resource: "*"
+      Roles:
+        - Ref: PipelineDeployRole
   DeliveryPipeline:
-    DependsOn : PipelineRolePolicies
+    DependsOn :
+      - PipelineRolePolicies
+      - PipelineDeployRolePolicies
     Type: AWS::CodePipeline::Pipeline
     Properties:
       RoleArn:
@@ -88,7 +126,7 @@ Resources:
                     - - 'arn:aws:iam::'
                       - '871404303724'
                       - ":role/"
-                      - Ref: PipelineRole
+                      - Ref: PipelineDeployRole
                 StackName: my-project--testName
                 TemplateConfiguration: 'my-project-BuildArtifact::template-configuration.json'
                 TemplatePath: 'my-project-BuildArtifact::template-export.yml'

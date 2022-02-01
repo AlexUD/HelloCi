@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: CodePipeline template
+Description: Role for deployment by CodePipeline
 Parameters:
   ResourcePipelineRoleName:
     Type: String

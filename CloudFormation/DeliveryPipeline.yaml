@@ -28,6 +28,7 @@ Resources:
             - 'iam:PassRole'
             - 'iam:GetRole'
             - 'iam:CreateRole'
+            - 'iam:PutRolePolicy'
           Resource: "*"
       Roles:
         - Ref: PipelineRole

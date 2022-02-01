@@ -11,9 +11,18 @@ Resources:
           Principal:
             Service:
               - "cloudformation.amazonaws.com"
+          Action: sts:AssumeRole
+      Path: "/"
+  PipelineRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          Effect: "Allow"
+          Principal:
+            Service:
               - "codepipeline.amazonaws.com"
-              - "iam.amazonaws.com"
-              - "lambda.amazonaws.com"
           Action: sts:AssumeRole
       Path: "/"
   RolePolicies:
@@ -28,6 +37,7 @@ Resources:
           Resource: "*"
       Roles:
         - Ref: RootRole
+        - Ref: PipelineRole
   DeliveryPipeline:
     DependsOn : RolePolicies
     Type: AWS::CodePipeline::Pipeline
@@ -79,7 +89,7 @@ Resources:
                     - - 'arn:aws:iam::'
                       - '871404303724'
                       - ":role/"
-                      - Ref: RootRole
+                      - Ref: PipelineRole
                 StackName: my-project--testName
                 TemplateConfiguration: 'my-project-BuildArtifact::template-configuration.json'
                 TemplatePath: 'my-project-BuildArtifact::template-export.yml'

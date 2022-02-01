@@ -11,6 +11,8 @@ Resources:
           Principal:
             Service:
               - "cloudformation.amazonaws.com"
+              - "cloudformation.amazonaws.com"
+              - "iam.amazonaws.com"
           Action: sts:AssumeRole
       Path: "/"
   PipelineRole:
@@ -23,6 +25,8 @@ Resources:
           Principal:
             Service:
               - "codepipeline.amazonaws.com"
+              - "cloudformation.amazonaws.com"
+              - "iam.amazonaws.com"
           Action: sts:AssumeRole
       Path: "/"
   RolePolicies:

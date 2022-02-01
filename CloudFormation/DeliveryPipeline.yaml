@@ -6,7 +6,6 @@ Parameters:
     Type: String
 Resources:
   DeliveryPipeline:
-    DependsOn : RolePolicies
     Type: AWS::CodePipeline::Pipeline
     Properties:
       RoleArn:

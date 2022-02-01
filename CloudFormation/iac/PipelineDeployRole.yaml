@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CodePipeline template
+Parameters:
+  ResourcePipelineRoleName:
+    Type: String
+  ResourcePipelineRolePolicyName:
+    Type: String
+Resources:
+  PipelineDeployRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: !Ref ResourcePipelineRoleName
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          Effect: "Allow"
+          Principal:
+            Service:
+              - "cloudformation.amazonaws.com"
+              - "codepipeline.amazonaws.com"
+              - "lambda.amazonaws.com"
+          Action: sts:AssumeRole
+      Path: "/"
+  PipelineDeployRolePolicies:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: !Ref ResourcePipelineRolePolicyName
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          Effect: "Allow"
+          Action:
+            - 'iam:*'
+            - 's3:*'
+            - 'cloudformation:*'
+            - 'elasticmapreduce:*'
+            - 'states:*'
+            - 'sns:*'
+            - 'events:*'
+            - 'cloudwatch:*'
+            - 'lambda:*'
+            - 'ec2:*'
+          Resource: "*"
+      Roles:
+        - Ref: PipelineDeployRole

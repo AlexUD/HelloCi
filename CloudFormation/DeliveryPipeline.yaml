@@ -27,46 +27,9 @@ Resources:
           Resource: "*"
       Roles:
         - Ref: PipelineRole
-  PipelineDeployRole:
-    Type: "AWS::IAM::Role"
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          Effect: "Allow"
-          Principal:
-            Service:
-              - "cloudformation.amazonaws.com"
-              - "codepipeline.amazonaws.com"
-              - "lambda.amazonaws.com"
-          Action: sts:AssumeRole
-      Path: "/"
-  PipelineDeployRolePolicies:
-    Type: "AWS::IAM::Policy"
-    Properties:
-      PolicyName: "PipelineRolePolicies"
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          Effect: "Allow"
-          Action:
-            - 'iam:*'
-            - 's3:*'
-            - 'cloudformation:*'
-            - 'elasticmapreduce:*'
-            - 'states:*'
-            - 'sns:*'
-            - 'events:*'
-            - 'cloudwatch:*'
-            - 'lambda:*'
-            - 'ec2:*'
-          Resource: "*"
-      Roles:
-        - Ref: PipelineDeployRole
   DeliveryPipeline:
     DependsOn :
       - PipelineRolePolicies
-      - PipelineDeployRolePolicies
     Type: AWS::CodePipeline::Pipeline
     Properties:
       RoleArn:
@@ -97,6 +60,31 @@ Resources:
                 -
                   Name: my-project-BuildArtifact
               RunOrder: 1
+        - Name: Role_Deploy
+          Actions:
+            - Name: PipelineRoleDeploy
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: CloudFormation
+                Version: '1'
+              Configuration:
+                ActionMode: CREATE_UPDATE
+                Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                RoleArn:
+                  Fn::Join:
+                    - ''
+                    - - 'arn:aws:iam::'
+                      - '871404303724'
+                      - ":role/"
+                      - Ref: PipelineRole
+                StackName: my-project--testName
+                TemplateConfiguration: 'my-project-BuildArtifact::PipelineDeployRole-config.json'
+                TemplatePath: 'my-project-BuildArtifact::PipelineDeployRole.yml'
+              OutputArtifacts: [ ]
+              InputArtifacts:
+                - Name: my-project-BuildArtifact
+              RunOrder: 1
         -
           Name: CF_Deploy
           Actions:
@@ -116,7 +104,7 @@ Resources:
                     - - 'arn:aws:iam::'
                       - '871404303724'
                       - ":role/"
-                      - Ref: PipelineDeployRole
+                      - "test-pipeline-role-name"
                 StackName: my-project--testName
                 TemplateConfiguration: 'my-project-BuildArtifact::template-configuration.json'
                 TemplatePath: 'my-project-BuildArtifact::template-export.yml'

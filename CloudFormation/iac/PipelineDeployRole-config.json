@@ -1,0 +1,6 @@
+{
+  "Parameters" : {
+    "ResourcePipelineRoleName": "test-pipeline-role-name",
+    "ResourcePipelineRolePolicyName": "test-pipeline-policy-name"
+  }
+}

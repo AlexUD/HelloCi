@@ -35,7 +35,7 @@ Resources:
             - 'lambda:*'
           Resource: "*"
       Roles:
-        - Ref: RootRole
+        - Ref: PipelineRole
   DeliveryPipeline:
     DependsOn : PipelineRolePolicies
     Type: AWS::CodePipeline::Pipeline

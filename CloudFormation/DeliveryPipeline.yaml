@@ -1,29 +1,55 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: CodePipeline template
-Resources:
-  RootRole:
-    Type: "AWS::IAM::Role"
+Parameters:
+  PipelineRole:
+    Description: Role's ARN
+    Type: String
+  DeliveryPipeline:
+    DependsOn : RolePolicies
+    Type: AWS::CodePipeline::Pipeline
     Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          Effect: "Allow"
-          Principal:
-            Service:
-              - "cloudformation.amazonaws.com"
-              - "iam.amazonaws.com"
-              - "lambda.amazonaws.com"
-          Action: sts:AssumeRole
-      Path: "/"
-  RolePolicies:
-    Type: "AWS::IAM::Policy"
-    Properties:
-      PolicyName: "root"
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          Effect: "Allow"
-          Action: "*"
-          Resource: "*"
-      Roles:
-        - Ref: RootRole
+      RoleArn:
+        - Ref: PipelineRole
+      ArtifactStore:
+        Type: S3
+        Location: 'codepipeline.test.templates.pipeline'
+      Stages:
+        -
+          Name: Source
+          Actions:
+            -
+              Name: SourceAction
+              ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Version: 1
+                Provider: S3
+              Configuration:
+                S3Bucket: 'codepipeline.test.templates'
+                S3ObjectKey: 'artifacts/iac.zip'
+              OutputArtifacts:
+                -
+                  Name: my-project-BuildArtifact
+              RunOrder: 1
+        -
+          Name: CF_Deploy
+          Actions:
+            -
+              Name: StackDeploy
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: CloudFormation
+                Version: '1'
+              Configuration:
+                ActionMode: CREATE_UPDATE
+                Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                RoleArn:
+                  Ref: RootRole
+                StackName: my-project--testName
+                TemplateConfiguration: 'my-project--BuildArtifact::template-configuration.json'
+                TemplatePath: 'my-project--BuildArtifact::template-export.yml'
+              OutputArtifacts: [ ]
+              InputArtifacts:
+                - Name: my-project-BuildArtifact
+              RunOrder: 1

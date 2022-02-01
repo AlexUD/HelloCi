@@ -18,7 +18,7 @@ Resources:
   PipelineRolePolicies:
     Type: "AWS::IAM::Policy"
     Properties:
-      PolicyName: "root"
+      PolicyName: "PipelineRolePolicies"
       PolicyDocument:
         Version: "2012-10-17"
         Statement:

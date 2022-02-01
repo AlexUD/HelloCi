@@ -81,7 +81,7 @@ Resources:
                       - Ref: PipelineRole
                 StackName: my-project--testName
                 TemplateConfiguration: 'my-project-BuildArtifact::PipelineDeployRole-config.json'
-                TemplatePath: 'my-project-BuildArtifact::PipelineDeployRole.yml'
+                TemplatePath: 'my-project-BuildArtifact::PipelineDeployRole.yaml'
               OutputArtifacts: [ ]
               InputArtifacts:
                 - Name: my-project-BuildArtifact
@@ -108,7 +108,7 @@ Resources:
                       - "test-pipeline-role-name"
                 StackName: my-project--testName
                 TemplateConfiguration: 'my-project-BuildArtifact::template-configuration.json'
-                TemplatePath: 'my-project-BuildArtifact::template-export.yml'
+                TemplatePath: 'my-project-BuildArtifact::template-export.yaml'
               OutputArtifacts: [ ]
               InputArtifacts:
                 - Name: my-project-BuildArtifact

@@ -23,7 +23,7 @@ Resources:
           Action: "*"
           Resource: "*"
       Roles:
-        Ref: RootRole
+        - Ref: RootRole
   DeliveryPipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:

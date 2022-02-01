@@ -9,8 +9,6 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              AWS:
-                - "arn:aws:iam::871404303724:user/alex"
               Service:
                 - cloudformation.amazonaws.com
                 - lambda.amazonaws.com

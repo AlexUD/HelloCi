@@ -33,6 +33,7 @@ Resources:
             - 'events:*'
             - 'cloudwatch:*'
             - 'lambda:*'
+            - 'ec2:*'
           Resource: "*"
       Roles:
         - Ref: PipelineRole
